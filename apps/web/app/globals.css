@@ -1,0 +1,4 @@
+@import "@kozmos-auth/ui/globals.css";
+
+/* Tailwind auto-detects templates in this app; also scan the shared UI package. */
+@source "../../../packages/ui/src/**/*.{ts,tsx}";

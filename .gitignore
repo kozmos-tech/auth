@@ -26,6 +26,13 @@ coverage
 out/
 build
 dist
+*.tsbuildinfo
+
+# Next.js generated types
+next-env.d.ts
+
+# Generated shadcn registry output (rebuild with `npm run build:registry`)
+packages/ui/public/r/
 
 
 # Debug

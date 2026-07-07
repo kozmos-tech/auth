@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "kozmos",
+  "homepage": "https://github.com/kozmos-tech/auth",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Displays a button or a component that looks like a button.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "files": [
+        {
+          "path": "src/components/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}
