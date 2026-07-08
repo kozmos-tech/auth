@@ -10,6 +10,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@kozmos-auth/db": "*",
     "@kozmos-auth/ui": "*",
     "clsx": "^2.1.1",
     "lucide-react": "^1.23.0",
