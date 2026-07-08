@@ -1,21 +1,24 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, useTransition, type ReactNode } from "react";
 import {
   Ban,
-  KeyRound,
+  CheckCircle2,
   Monitor,
   Settings,
   Smartphone,
+  Trash2,
   User,
 } from "lucide-react";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Tabs, type TabItem } from "@/components/dashboard/tabs";
+import { deleteUser, setUserStatus, updateUser } from "@/lib/actions";
 import type { DashboardUser, Project } from "@/lib/data";
 
 const sessions = [
@@ -47,6 +50,38 @@ export function UserDetail({
     email: user.email,
     status: user.status,
   });
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const dirty =
+    form.name !== user.name ||
+    form.email !== user.email ||
+    form.status !== user.status;
+
+  function save() {
+    setError(null);
+    setSaved(false);
+    startTransition(async () => {
+      const result = await updateUser(project.id, user.id, form);
+      if ("error" in result) {
+        setError(result.error);
+        return;
+      }
+      setSaved(true);
+    });
+  }
+
+  function toggleSuspend() {
+    const next = form.status === "suspended" ? "active" : "suspended";
+    setError(null);
+    startTransition(async () => {
+      await setUserStatus(project.id, user.id, next);
+      setForm((f) => ({ ...f, status: next }));
+    });
+  }
+
+  const suspended = form.status === "suspended";
 
   const tabs: TabItem[] = [
     {
@@ -123,20 +158,33 @@ export function UserDetail({
       content: (
         <div className="space-y-6">
           <div className="flex items-center justify-end gap-2">
+            {saved && !dirty && (
+              <span className="mr-auto text-sm text-muted-foreground">
+                Changes saved.
+              </span>
+            )}
+            {error && (
+              <span className="mr-auto text-sm text-destructive">{error}</span>
+            )}
             <Button
               variant="ghost"
               size="sm"
-              onClick={() =>
+              disabled={!dirty || pending}
+              onClick={() => {
                 setForm({
                   name: user.name,
                   email: user.email,
                   status: user.status,
-                })
-              }
+                });
+                setError(null);
+                setSaved(false);
+              }}
             >
               Cancel
             </Button>
-            <Button size="sm">Save changes</Button>
+            <Button size="sm" disabled={!dirty || pending} onClick={save}>
+              {pending ? "Saving…" : "Save changes"}
+            </Button>
           </div>
 
           <Card title="Profile">
@@ -144,29 +192,32 @@ export function UserDetail({
               <EditRow label="Full name">
                 <Input
                   value={form.name}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, name: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setForm((f) => ({ ...f, name: e.target.value }));
+                    setSaved(false);
+                  }}
                 />
               </EditRow>
               <EditRow label="Email">
                 <Input
                   type="email"
                   value={form.email}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, email: e.target.value }))
-                  }
+                  onChange={(e) => {
+                    setForm((f) => ({ ...f, email: e.target.value }));
+                    setSaved(false);
+                  }}
                 />
               </EditRow>
               <EditRow label="Status">
                 <Select
                   value={form.status}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setForm((f) => ({
                       ...f,
                       status: e.target.value as DashboardUser["status"],
-                    }))
-                  }
+                    }));
+                    setSaved(false);
+                  }}
                 >
                   <option value="active">Active</option>
                   <option value="invited">Invited</option>
@@ -176,37 +227,64 @@ export function UserDetail({
             </div>
           </Card>
 
-          <Card title="Security">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium">Reset password</p>
-                <p className="text-xs text-muted-foreground">
-                  Send this user a link to choose a new password.
-                </p>
-              </div>
-              <Button variant="outline" size="sm">
-                <KeyRound className="size-4" />
-                Reset password
-              </Button>
-            </div>
-          </Card>
-
           <Card title="Danger zone">
-            <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-              <div>
-                <p className="text-sm font-medium">Suspend user</p>
-                <p className="text-xs text-muted-foreground">
-                  Revoke access for {form.name} until re-enabled.
-                </p>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+                <div>
+                  <p className="text-sm font-medium">
+                    {suspended ? "Reactivate user" : "Suspend user"}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {suspended
+                      ? `Restore access for ${form.name}.`
+                      : `Revoke access for ${form.name} until re-enabled.`}
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={pending}
+                  onClick={toggleSuspend}
+                  className={
+                    suspended
+                      ? "border-emerald-500/40 text-emerald-600 hover:bg-emerald-500/10 hover:text-emerald-600 dark:text-emerald-400"
+                      : "border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  }
+                >
+                  {suspended ? (
+                    <CheckCircle2 className="size-4" />
+                  ) : (
+                    <Ban className="size-4" />
+                  )}
+                  {suspended ? "Reactivate" : "Suspend"}
+                </Button>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
-              >
-                <Ban className="size-4" />
-                Suspend
-              </Button>
+
+              <div className="flex items-center justify-between rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+                <div>
+                  <p className="text-sm font-medium">Delete user</p>
+                  <p className="text-xs text-muted-foreground">
+                    Permanently remove {form.name} and all of their sessions.
+                  </p>
+                </div>
+                <ConfirmDialog
+                  title="Delete user"
+                  description={`This permanently removes ${form.name} from ${project.name}, along with their sessions and linked accounts. This cannot be undone.`}
+                  confirmLabel="Delete user"
+                  onConfirm={() => deleteUser(project.id, user.id)}
+                  trigger={(open) => (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={open}
+                      className="border-destructive/40 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                      Delete
+                    </Button>
+                  )}
+                />
+              </div>
             </div>
           </Card>
         </div>

@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, FolderKanban, Plus, Users } from "lucide-react";
+import { ArrowUpRight, FolderKanban, Users } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Sparkline } from "@/components/dashboard/chart";
 import { EmptyState } from "@/components/dashboard/empty-state";
 import { TopNav } from "@/components/dashboard/top-nav";
+import { NewProjectDialog } from "@/components/projects/new-project-dialog";
 import { getProjects } from "@/lib/data";
 import { requireOwner } from "@/lib/session";
 
@@ -24,10 +24,7 @@ export default async function ProjectsPage() {
               Manage authentication for each of your applications.
             </p>
           </div>
-          <Button size="sm">
-            <Plus className="size-4" />
-            New project
-          </Button>
+          <NewProjectDialog />
         </div>
 
         {projects.length === 0 ? (

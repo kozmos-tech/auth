@@ -2,13 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpDown, Plus, Search, SlidersHorizontal } from "lucide-react";
+import { ArrowUpDown, Search, SlidersHorizontal } from "lucide-react";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { StatusBadge } from "@/components/ui/status-badge";
+// Invite feature is disabled until it can be fully implemented.
+// import { InviteUserDialog } from "@/components/projects/invite-user-dialog";
 import { cn } from "@/lib/utils";
 import type { DashboardUser, Project } from "@/lib/data";
 
@@ -94,10 +96,8 @@ export function UsersTable({ project }: { project: Project }) {
           }}
         />
 
-        <Button size="sm" className="ml-auto">
-          <Plus className="size-4" />
-          Invite user
-        </Button>
+        {/* Invite feature disabled for now — not ready to implement yet.
+        <InviteUserDialog projectId={project.id} /> */}
       </div>
 
       <div className="overflow-hidden rounded-lg border border-border">
