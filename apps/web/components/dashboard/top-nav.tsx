@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import type { Crumb } from "@/components/dashboard/breadcrumbs";
+import { LogoutButton } from "@/components/dashboard/logout-button";
 
 export function TopNav({ crumbs = [] }: { crumbs?: Crumb[] }) {
   return (
@@ -37,10 +38,7 @@ export function TopNav({ crumbs = [] }: { crumbs?: Crumb[] }) {
           ))}
         </nav>
 
-        <button className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-          <LogOut className="size-4" />
-          Log out
-        </button>
+        <LogoutButton />
       </div>
     </header>
   );
