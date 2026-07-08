@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { TopNav } from "@/components/dashboard/top-nav";
 import { ProjectWorkspace } from "@/components/projects/project-workspace";
-import { getProject } from "@/lib/mock-data";
+import { getProject } from "@/lib/data";
+import { requireOwner } from "@/lib/session";
 
 export default async function ProjectPage({
   params,
@@ -11,7 +12,8 @@ export default async function ProjectPage({
   params: Promise<{ projectId: string }>;
 }) {
   const { projectId } = await params;
-  const project = getProject(projectId);
+  const owner = await requireOwner();
+  const project = await getProject(owner.id, projectId);
 
   if (!project) notFound();
 

@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Tabs, type TabItem } from "@/components/dashboard/tabs";
-import type { DashboardUser, Project } from "@/lib/mock-data";
+import type { DashboardUser, Project } from "@/lib/data";
 
 const sessions = [
   {

@@ -7,7 +7,7 @@ import { Overview } from "@/components/projects/overview";
 import { ApiKeys } from "@/components/projects/api-keys";
 import { ProjectSettings } from "@/components/projects/project-settings";
 import { UsersTable } from "@/components/projects/users-table";
-import type { Project } from "@/lib/mock-data";
+import type { Project } from "@/lib/data";
 
 export function ProjectWorkspace({ project }: { project: Project }) {
   const tabs: TabItem[] = [

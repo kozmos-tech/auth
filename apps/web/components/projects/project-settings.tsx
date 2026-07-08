@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import type { Project } from "@/lib/mock-data";
+import type { Project } from "@/lib/data";
 
 function Field({
   label,

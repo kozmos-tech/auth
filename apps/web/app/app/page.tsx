@@ -1,13 +1,18 @@
 import Link from "next/link";
-import { ArrowUpRight, Plus, Users } from "lucide-react";
+import { ArrowUpRight, FolderKanban, Plus, Users } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sparkline } from "@/components/dashboard/chart";
+import { EmptyState } from "@/components/dashboard/empty-state";
 import { TopNav } from "@/components/dashboard/top-nav";
-import { projects } from "@/lib/mock-data";
+import { getProjects } from "@/lib/data";
+import { requireOwner } from "@/lib/session";
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const owner = await requireOwner();
+  const projects = await getProjects(owner.id);
+
   return (
     <>
       <TopNav crumbs={[{ label: "Projects" }]} />
@@ -25,13 +30,23 @@ export default function ProjectsPage() {
           </Button>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
+        {projects.length === 0 ? (
+          <div className="mt-8">
+            <EmptyState
+              icon={<FolderKanban className="size-5" />}
+              title="No projects yet"
+              description="Create your first project to start authenticating users."
+            />
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => {
             const delta = (project.growth.at(-1) ?? 0) - (project.growth[0] ?? 0);
             return (
               <Link
                 key={project.id}
                 href={`/app/projects/${project.id}`}
+                prefetch
                 className="group flex flex-col rounded-xl border border-border p-5 transition-colors hover:bg-muted/40"
               >
                 <div className="flex items-center justify-between">
@@ -61,10 +76,11 @@ export default function ProjectsPage() {
                 <div className="mt-3 flex items-center gap-2 border-t border-border pt-3 text-xs text-muted-foreground">
                   <Badge>{project.environment}</Badge>
                 </div>
-              </Link>
-            );
-          })}
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </main>
     </>
   );

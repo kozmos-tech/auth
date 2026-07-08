@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { cn } from "@/lib/utils";
-import type { DashboardUser, Project } from "@/lib/mock-data";
+import type { DashboardUser, Project } from "@/lib/data";
 
 type SortKey = "name" | "role" | "lastActive";
 

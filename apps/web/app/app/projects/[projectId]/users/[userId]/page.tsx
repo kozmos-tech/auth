@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 
 import { TopNav } from "@/components/dashboard/top-nav";
 import { UserDetail } from "@/components/users/user-detail";
-import { getUser } from "@/lib/mock-data";
+import { getUser } from "@/lib/data";
+import { requireOwner } from "@/lib/session";
 
 export default async function UserPage({
   params,
@@ -10,7 +11,8 @@ export default async function UserPage({
   params: Promise<{ projectId: string; userId: string }>;
 }) {
   const { projectId, userId } = await params;
-  const result = getUser(projectId, userId);
+  const owner = await requireOwner();
+  const result = await getUser(owner.id, projectId, userId);
 
   if (!result) notFound();
 

@@ -76,12 +76,34 @@ export const project = pgTable("project", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
+  description: text("description"),
+  // "production" | "development" — which key set / behaviour the project runs with.
+  environment: text("environment").notNull().default("production"),
   ownerId: text("ownerId")
     .notNull()
     .references(() => platformUser.id, { onDelete: "cascade" }),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 });
+
+// Per-project API keys used by clients to authenticate requests to Kozmos.
+export const apiKey = pgTable(
+  "apiKey",
+  {
+    id: text("id").primaryKey(),
+    projectId: text("projectId")
+      .notNull()
+      .references(() => project.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    // "publishable" (safe for clients) | "secret" (server-only).
+    type: text("type").notNull().default("secret"),
+    token: text("token").notNull().unique(),
+    lastUsedAt: timestamp("lastUsedAt"),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
+    updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  },
+  (t) => [index("apiKey_projectId_idx").on(t.projectId)],
+);
 
 // ============================================================================
 // END-USER LAYER
@@ -102,6 +124,10 @@ export const user = pgTable(
     email: text("email").notNull(),
     emailVerified: boolean("emailVerified").notNull().default(false),
     image: text("image"),
+    // "active" | "invited" | "suspended" — lifecycle state within the project.
+    status: text("status").notNull().default("active"),
+    // "owner" | "admin" | "member" — the user's role within the project.
+    role: text("role").notNull().default("member"),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
     updatedAt: timestamp("updatedAt").notNull().defaultNow(),
   },

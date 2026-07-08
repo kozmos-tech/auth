@@ -2,7 +2,7 @@ import { Copy, Plus, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { ApiKey, Project } from "@/lib/mock-data";
+import type { ApiKey, Project } from "@/lib/data";
 
 function mask(token: string) {
   const [prefix] = token.split(/(?<=_)/);

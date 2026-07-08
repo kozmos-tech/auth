@@ -2,7 +2,7 @@ import { ArrowUpRight, Users } from "lucide-react";
 
 import { AreaChart } from "@/components/dashboard/chart";
 import { Select } from "@/components/ui/select";
-import type { Project } from "@/lib/mock-data";
+import type { Project } from "@/lib/data";
 
 export function Overview({ project }: { project: Project }) {
   const total = project.users.length;

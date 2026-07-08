@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { UserStatus } from "@/lib/mock-data";
+import type { UserStatus } from "@/lib/data";
 
 const config: Record<UserStatus, { label: string; dot: string }> = {
   active: { label: "Active", dot: "bg-emerald-500" },
