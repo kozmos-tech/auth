@@ -15,6 +15,90 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "A styled text input.",
+      "files": [
+        {
+          "path": "src/components/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "An accessible label associated with a control.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A container with header, content, and footer sections.",
+      "files": [
+        {
+          "path": "src/components/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "An image element with a text fallback.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kozmos-auth",
+      "type": "registry:block",
+      "title": "Kozmos Auth Components",
+      "description": "Sign-in, sign-up, sign-out, user profile, and auth gates wired to the @kozmos-auth/auth SDK.",
+      "dependencies": ["@kozmos-auth/auth"],
+      "registryDependencies": ["button", "input", "label", "card", "avatar"],
+      "files": [
+        {
+          "path": "src/lib/kozmos-auth.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/components/auth/sign-in-form.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/auth/sign-up-form.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/auth/sign-out-button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/auth/user-profile.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/auth/auth-gate.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

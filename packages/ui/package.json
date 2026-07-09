@@ -7,6 +7,7 @@
     "./globals.css": "./src/styles/globals.css",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
+    "./html/*": "./src/html/*.ts",
     "./hooks/*": "./src/hooks/*.ts"
   },
   "scripts": {
@@ -14,6 +15,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@kozmos-auth/auth": "*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.23.0",
