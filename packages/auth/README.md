@@ -25,12 +25,12 @@ Create a project in the Kozmos dashboard to get your keys, then set:
 ```sh
 # Client (browser-safe)
 NEXT_PUBLIC_KOZMOS_PUBLISHABLE_KEY="pk_live_..."
-NEXT_PUBLIC_KOZMOS_API_URL="https://auth.your-kozmos-host.com"
+NEXT_PUBLIC_KOZMOS_API_URL="https://auth.kozmos.tech"
 NEXT_PUBLIC_KOZMOS_GOOGLE="true"   # optional — enables Google sign-in helpers
 
 # Server (never exposed to the browser)
 KOZMOS_SECRET_KEY="sk_live_..."
-KOZMOS_API_URL="https://auth.your-kozmos-host.com"
+KOZMOS_API_URL="https://auth.kozmos.tech"
 ```
 
 Prefer explicit config? Pass the values to `createKozmosClient` /

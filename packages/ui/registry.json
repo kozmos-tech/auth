@@ -99,6 +99,18 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "kozmos-auth-html",
+      "type": "registry:lib",
+      "title": "Kozmos Auth HTML Page",
+      "description": "Framework-agnostic renderAuthPage() — a self-contained HTML sign-in/sign-up page for non-React servers (Hono, Express, plain Node).",
+      "files": [
+        {
+          "path": "src/html/auth-page.ts",
+          "type": "registry:lib"
+        }
+      ]
     }
   ]
 }

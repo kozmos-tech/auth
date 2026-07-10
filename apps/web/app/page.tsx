@@ -29,6 +29,7 @@ export default function Home() {
       </section>
 
       <footer className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+        <FootLink href="/docs">Docs</FootLink>
         <FootLink href="/llms.txt">llms.txt</FootLink>
         <McpDialog />
         <FootLink href="https://github.com/kozmos-tech/auth" external>

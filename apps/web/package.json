@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "copy-registry": "node scripts/copy-registry.mjs",
+    "predev": "node scripts/copy-registry.mjs",
+    "prebuild": "node scripts/copy-registry.mjs",
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start --port 3000",
